@@ -1,19 +1,25 @@
 import React from "react";
 import Button from "./Button.jsx";
 
-function FriendsList({ friends }) {
+function FriendsList({ friends, onSelection, selectedFriend }) {
 	return (
 		<ul>
 			{friends.map((friend) => (
-				<Friend key={friend.id} friend={friend} />
+				<Friend
+					key={friend.id}
+					friend={friend}
+					selectedFriend={selectedFriend}
+					onSelection={onSelection}
+				/>
 			))}
 		</ul>
 	);
 }
 
-function Friend({ friend }) {
+function Friend({ friend, onSelection, selectedFriend }) {
+	const isSelected = selectedFriend?.id === friend.id;
 	return (
-		<li>
+		<li className={isSelected ? "selected" : ""}>
 			<img src={friend.image} alt={friend.name} />
 			<h3>{friend.name}</h3>
 
@@ -29,7 +35,9 @@ function Friend({ friend }) {
 			)}
 			{friend.balance === 0 && <p>You and {friend.name} are even</p>}
 
-			<Button className="button">Select</Button>
+			<Button onClick={() => onSelection(friend)} className="button">
+				{isSelected ? "Close" : "Select"}
+			</Button>
 		</li>
 	);
 }
